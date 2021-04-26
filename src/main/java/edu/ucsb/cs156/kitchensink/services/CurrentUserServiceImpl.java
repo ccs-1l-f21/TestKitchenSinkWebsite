@@ -40,8 +40,8 @@ public class CurrentUserServiceImpl extends CurrentUserService {
 
       return userRepository.findByEmail(email)
           .orElseGet(
-              () ->
-                  User.builder()
+              () -> {
+                  User u = User.builder()
                       .googleSub(googleSub)
                       .email(email)
                       .pictureUrl(pictureUrl)
@@ -51,7 +51,11 @@ public class CurrentUserServiceImpl extends CurrentUserService {
                       .emailVerified(emailVerified)
                       .locale(locale)
                       .hostedDomain(hostedDomain)
-                      .build()
+                      .build();
+                  userRepository.save(u);
+                  return u;
+              }
+
           );
     }
 

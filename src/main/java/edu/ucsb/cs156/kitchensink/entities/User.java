@@ -1,13 +1,8 @@
 package edu.ucsb.cs156.kitchensink.entities;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +22,6 @@ public class User {
   private boolean emailVerified;
   private String locale;
   private String hostedDomain;
+  private boolean admin;
 
 }
