@@ -18,11 +18,7 @@ describe("utils/users tests", () => {
                 </QueryClientProvider>
             );
 
-<<<<<<< HEAD
-            const expectation = nock('http://localhost')
-=======
             const _expectation = nock('http://localhost')
->>>>>>> origin/pcAddAdminPage2
                 .get('/api/admin/users')
                 .reply(403);
 
@@ -45,11 +41,7 @@ describe("utils/users tests", () => {
                 </QueryClientProvider>
             );
 
-<<<<<<< HEAD
-            const expectation = nock('http://localhost')
-=======
             const _expectation = nock('http://localhost')
->>>>>>> origin/pcAddAdminPage2
                 .get('/api/admin/users')
                 .reply(404);
 
@@ -75,11 +67,7 @@ describe("utils/users tests", () => {
                 </QueryClientProvider>
             );
 
-<<<<<<< HEAD
-            const expectation = nock('http://localhost')
-=======
             const _expectation = nock('http://localhost')
->>>>>>> origin/pcAddAdminPage2
                 .get('/api/admin/users')
                 .reply(200, usersFixtures.twoUsers);
 
