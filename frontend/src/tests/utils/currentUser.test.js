@@ -5,10 +5,10 @@ import { apiCurrentUserFixtures, currentUserFixtures } from "fixtures/currentUse
 import nock from "nock";
 import mockConsole from "jest-mock-console";
 import { act } from 'react-dom/test-utils';
+import { useNavigate } from "react-router-dom"
 
 
 jest.mock('react-router-dom');
-import { useNavigate } from "react-router-dom"
 const { MemoryRouter } = jest.requireActual('react-router-dom');
 
 
