@@ -24,7 +24,7 @@ describe("utils/currentUser tests", () => {
                 </QueryClientProvider>
             );
 
-            const expectation = nock('http://localhost')
+            const _expectation = nock('http://localhost')
                 .get('/api/currentUser')
                 .reply(403);
 
@@ -45,7 +45,7 @@ describe("utils/currentUser tests", () => {
                 </QueryClientProvider>
             );
 
-            const expectation = nock('http://localhost')
+            const _expectation = nock('http://localhost')
                 .get('/api/currentUser')
                 .reply(200, apiCurrentUserFixtures.userOnly);
 
@@ -70,7 +70,7 @@ describe("utils/currentUser tests", () => {
             );
 
             const apiResult = apiCurrentUserFixtures.missingRolesToTestErrorHandling;
-            const expectation = nock('http://localhost')
+            const _expectation = nock('http://localhost')
                 .get('/api/currentUser')
                 .reply(200, apiResult);
 
@@ -98,7 +98,7 @@ describe("utils/currentUser tests", () => {
                 </QueryClientProvider>
             );
 
-            const nockExpectation = nock('http://localhost')
+            const _nockExpectation = nock('http://localhost')
                 .post('/logout')
                 .reply(200);
 
