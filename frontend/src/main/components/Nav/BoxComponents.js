@@ -26,7 +26,7 @@ const App = ({diningHall}) => {
                 backgroundColor : 'gray'
             }} >
                 <Box component="span" sx={{ fontSize: 16, mt: 1 }}>
-                    <Link to='/ortega'>{diningHall}</Link>
+                    <Link to='/de-la-guerra'>{diningHall}</Link>
                 </Box>
             </Box>
         )
@@ -51,7 +51,7 @@ const App = ({diningHall}) => {
                 boxShadow: 1,
                 backgroundColor : 'gray'
             }} >
-                <Link to='/carillo'>{diningHall}</Link>
+                <Link to='/carrillo'>{diningHall}</Link>
             </Box>
         )
     }
