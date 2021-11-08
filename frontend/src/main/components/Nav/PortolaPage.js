@@ -30,7 +30,7 @@ class PortolaEntrees extends React.Component{
             this.setState({sampleData: "No Meals at the Current Time"});
             return;
         }
-        const url = "http://localhost:8080/api/dining/menu?date=" + date + "&diningCommonsCode=portola&mealCode=" + mealOfTheDay;
+        const url = "https://testkitchensinknew.herokuapp.com/api/dining/menu?date=" + date + "&diningCommonsCode=portola&mealCode=" + mealOfTheDay;
 
         
         

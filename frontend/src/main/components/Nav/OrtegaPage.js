@@ -23,7 +23,7 @@ class OrtegaEntrees extends React.Component{
             }
         }
         
-        const url = "http://localhost:8080/api/dining/menu?date=" + date + "&diningCommonsCode=ortega&mealCode=lunch";
+        const url = "https://testkitchensinknew.herokuapp.com/api/dining/menu?date=" + date + "&diningCommonsCode=ortega&mealCode=lunch";
         axios.get(url)
             .then(
                 (res) => {
