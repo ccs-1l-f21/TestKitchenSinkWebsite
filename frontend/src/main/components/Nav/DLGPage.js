@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+require('dotenv').config({path: "../../.env"})
 class DLGEntrees extends React.Component{
     constructor(props){
         super(props);
@@ -30,7 +30,7 @@ class DLGEntrees extends React.Component{
             this.setState({sampleData: "No Meals at the Current Time"});
             return;
         }
-        const url = "https://testkitchensinknew.herokuapp.com/api/dining/menu?date=" + date + "&diningCommonsCode=portola&mealCode=" + mealOfTheDay;
+        const url = process.env.REACT_APP_BASE_LINK + "/api/dining/menu?date=" + date + "&diningCommonsCode=portola&mealCode=" + mealOfTheDay;
         
         axios.get(url)
             .then(

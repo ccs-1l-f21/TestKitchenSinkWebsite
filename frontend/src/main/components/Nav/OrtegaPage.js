@@ -48,15 +48,19 @@ class OrtegaEntrees extends React.Component{
     componentWillUnmount(){
         clearInterval(this.checkInterval);
     }
+    mealItemToDivElement(item) {
+        return (
+            <div>{item}</div>
+        )
+    }
     render() {
         if (this.props.update){
             this.pullData();
             this.props.setUpdate(false);
         }
         return (
-            
             <div>
-                <p>{this.state.sampleData}</p>
+                <p>{this.state.sampleData.forEach(this.mealItemToDivElement)}</p>
             </div> 
         )
     }

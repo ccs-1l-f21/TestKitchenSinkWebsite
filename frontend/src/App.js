@@ -9,8 +9,6 @@ import CarrilloEntrees from "main/components/Nav/CarrilloPage";
 import PortolaEntrees from "main/components/Nav/PortolaPage";
 
 import "bootstrap/dist/css/bootstrap.css";
-
-
 function App() {
 
   const { data: currentUser } = useCurrentUser();
