@@ -1,15 +1,23 @@
+import React from "react"
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import BoxComponents from "main/components/Nav/BoxComponents";
+import BoxComponents from "main/components/HomePageBox/BoxComponents";
+import { useCommons } from "main/utils/commons";
+// import { Route, Router } from "react-router";
+// import DiningCommonPage from "./DiningCommonPage";
+// import DiningCommons from "main/components/DiningCommons/DiningCommons";
 
-export default function HomePage() {
+
+export default function HomePage(props) {
+  const { data: diningCommonsListFromBackEnd } = useCommons();
+  const diningCommonsList = (diningCommonsListFromBackEnd.length > 0) ? diningCommonsListFromBackEnd : props.diningCommonsList;
+
   return (
-    <BasicLayout>
-      <div className="pt-2">
-        <BoxComponents diningHall='ortega'></BoxComponents>
-        <BoxComponents diningHall='portola'></BoxComponents>
-        <BoxComponents diningHall='de-la-guerra'></BoxComponents>
-        <BoxComponents diningHall='carrillo'></BoxComponents>
-      </div>
-    </BasicLayout>
+    <>
+      <BasicLayout>
+        <div className="pt-2">
+          {diningCommonsList && diningCommonsList.map((dc)=>(<BoxComponents diningHallName={dc.name} diningHallCode = {dc.code} />)) }
+        </div>
+      </BasicLayout>
+    </>
   )
 }

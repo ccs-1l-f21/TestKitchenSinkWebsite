@@ -16,9 +16,19 @@ const Template = (args) => {
 };
 
 export const brunch = Template.bind({});
-brunch.args = {meal : mealsFixtures[0]};
+brunch.args = {
+    diningCommons : {
+        code : "ortega"
+    }, 
+    meal : mealsFixtures[0]
+};
 
 export const dinner = Template.bind({});
-dinner.args = {meal : mealsFixtures[1]};
+dinner.args = {
+    diningCommons : {
+        code : "ortega"
+    },
+    meal : mealsFixtures[1]
+};
 
 

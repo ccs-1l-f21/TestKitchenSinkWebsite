@@ -48,9 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
         )
         .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userAuthoritiesMapper(this.userAuthoritiesMapper())))
-        .csrf(csrf -> csrf
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        )
+        // .csrf(csrf -> csrf
+        //     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        // )
+        .csrf().disable()
         .logout(logout -> logout
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .logoutSuccessUrl("/")

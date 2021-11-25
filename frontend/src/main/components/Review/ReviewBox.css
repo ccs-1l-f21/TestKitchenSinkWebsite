@@ -1,0 +1,51 @@
+.darker {
+    float: left;
+    border-radius: 5px;
+    padding-left: 40px;
+    padding-right: 30px;
+    padding-top: 10px
+}
+
+.comment h4,
+.comment span,
+.darker h4,
+.darker span {
+    display: inline;
+}
+
+.comment p,
+.comment span,
+.darker p,
+.darker span {
+    color: rgba(45,46,47,1);
+}
+
+p {
+    color: rgba(45,46,47,1);
+}
+
+h1,
+h4 {
+    color: rgba(45,46,47,1);
+    font-weight: bold;
+}
+
+img {
+    border-radius: 20px;
+    max-width: 300px;
+    max-height: 200px;
+    height: auto;
+    width: auto;
+    padding: 10px;
+}
+
+#pfp {
+    height: 100px;
+}
+
+#food-item {
+    float: inline-start;
+}
+
+
+

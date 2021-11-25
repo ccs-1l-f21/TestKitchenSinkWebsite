@@ -1,0 +1,12 @@
+.food-item {
+    color: black;
+}
+
+#food-item-placement {
+    border-right: 10%;
+}
+
+#write-review-button {
+    position: absolute;
+    top: 400px;
+}
