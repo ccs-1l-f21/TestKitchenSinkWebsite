@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Builder
 @Entity(name = "reviews")
 public class Review {
@@ -25,6 +25,7 @@ public class Review {
   private MenuItem menuItem;
 
   private int stars;
+  
   private String review;
 }
 

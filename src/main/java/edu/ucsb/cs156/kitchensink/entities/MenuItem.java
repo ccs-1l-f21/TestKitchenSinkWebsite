@@ -11,9 +11,18 @@ import java.util.Collection;
 @NoArgsConstructor
 @Builder
 @Entity(name = "items")
+@Table
 public class MenuItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(
+    name = "menuitem_sequence",
+    sequenceName = "menuitem_sequence",
+    allocationSize = 1  
+  )
+  @GeneratedValue(
+    strategy = GenerationType.SEQUENCE, 
+    generator = "menuitem_sequence"
+  )
   private long id;
   private String name;
   private String station;

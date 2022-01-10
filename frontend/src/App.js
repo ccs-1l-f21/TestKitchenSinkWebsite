@@ -28,8 +28,8 @@ function App() {
           }
           {commonsList.map((c) => (<Route path={`commons/${c.code}`} element={<DiningCommonPage diningCommonName={c.name} diningCommonCode = {c.code}/>}/>))}
           <Route path='/itemPageTest' element={<ItemPage />} />
-          <Route path='/dining/:hall/:food' element={<ItemPage/>}/>
-          <Route path='/write-review/:hall/:food' element={<WriteReview />} />
+          <Route path='/dining/:hall/:food/:station' element={<ItemPage/>}/>
+          <Route path='/write-review/:hall/:food/:station' element={<WriteReview />} />
         </Routes>
       </BrowserRouter>
   );

@@ -4,12 +4,14 @@ import { /*Card, Container,*/ Row, Col } from "react-bootstrap";
 
 const Item = (props) => {
     var urlItemName = props.item.name.replace(/ /g,"_");
+    urlItemName = urlItemName.replaceAll(String.fromCharCode(47), '-');
+    var urlItemStation = props.item.station.replace(/ /g,"_");
     return(
         //<Card.Body style={{fontSize:"20px", borderTop:"1px solid lightgrey"}}>
         //   <Container>
                 <Row>
                     <Col sx={4} data-testid="item-name">
-                        <Link to={`/dining/${props.dining_hall}/${urlItemName}`}>{props.item.name}</Link>
+                        <Link to={`/dining/${props.dining_hall}/${urlItemName}/${urlItemStation}`}>{props.item.name}</Link>
                     </Col>
                     <Col sx={4} data-testid="item-station">{props.item.station}</Col>
                 </Row>

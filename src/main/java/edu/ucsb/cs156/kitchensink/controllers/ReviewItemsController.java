@@ -31,7 +31,8 @@ public class ReviewItemsController {
     @GetMapping("/item")
     public ResponseEntity<String> getItem(
         @ApiParam("dining commons code, e.g. de-la-guerra") @RequestParam String hall,
-        @ApiParam("item name, e.g. Grilled Turkey Jack on Sourdough") @RequestParam String item
+        @ApiParam("item name, e.g. Grilled Turkey Jack on Sourdough") @RequestParam String item,
+        @ApiParam("station name, e.g. Condiments") @RequestParam String station
     ) throws JsonProcessingException {
         return ResponseEntity.ok().body("HELLO FROM REVIEWITEMSCONTROLLER.java - getItem()");
     }

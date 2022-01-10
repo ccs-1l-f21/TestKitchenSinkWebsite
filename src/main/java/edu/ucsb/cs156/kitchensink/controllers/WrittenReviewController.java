@@ -5,16 +5,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import edu.ucsb.cs156.kitchensink.entities.MenuItem;
+import edu.ucsb.cs156.kitchensink.entities.Review;
 import edu.ucsb.cs156.kitchensink.models.CurrentUser;
 import edu.ucsb.cs156.kitchensink.repositories.MenuItemRepository;
 import edu.ucsb.cs156.kitchensink.repositories.ReviewRepository;
@@ -56,14 +55,16 @@ public class WrittenReviewController extends ApiController {
         @ApiParam("review text, e.g. this sucked") @RequestParam String rText,
         @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,
         @ApiParam("hall, e.g. de-la-guerra") @RequestParam String diningCommonsCode,
-        @ApiParam("item, e.g. Dan Dan Noodles (nuts)") @RequestParam String item
+        @ApiParam("item, e.g. Dan Dan Noodles (nuts)") @RequestParam String item,
+        @ApiParam("station, e.g. Condiments") @RequestParam String station
     ) throws JsonProcessingException {
         CurrentUser currentUser = super.getCurrentUser();
         log.info("review = " + rText);
         log.info("rating = " + rating);
         log.info("diningCommonsCode = " + diningCommonsCode);
         log.info("item = " + item);
-        log.info("currentUser = " + currentUser);
+        log.info("station = " + station);
+        // log.info("currentUser = " + currentUser);
         MenuItem menuItem = null;
         Optional<MenuItem> optionalMenuItem = menuItemRepository.findByNameAndDiningCommonsCode(item, diningCommonsCode);
         if (optionalMenuItem.isPresent()) {
@@ -73,10 +74,26 @@ public class WrittenReviewController extends ApiController {
             menuItem = new MenuItem();
             menuItem.setName(item);
             menuItem.setDiningCommonsCode(diningCommonsCode);
+            menuItem.setStation(station);
             menuItem = menuItemRepository.save(menuItem);
         }
-        log.info("menuItem = " + menuItem);
-        String body = mapper.writeValueAsString(menuItem);
+        // log.info("menuItem = " + menuItem);
+        // to do: create a new review object 
+        // assign the menu item from the menu item variable
+        // assign user from the current user variable
+        // assign stars and texts from the variables passed in by the user
+        // store the review - review = reviewRepository.save(menuItem);
+        // Change String body = mapper.writeValueAsString(review);
+        Review review = null;
+        review = new Review();
+        review.setUser(currentUser.getUser());
+        review.setMenuItem(menuItem);
+        review.setStars(rating);
+        review.setReview(rText);
+        review = reviewRepository.save(review);
+        // log.info("review = " + review);
+
+        String body = mapper.writeValueAsString(review);
         return ResponseEntity.ok().body(body);
     }
 

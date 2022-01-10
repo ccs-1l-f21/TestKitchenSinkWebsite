@@ -6,7 +6,14 @@ export function useItems(diningCommons, meal) {
   return useQuery(`getItems-${diningCommons}-${meal}`, async () => {
     try {
       const response = await getItems(diningCommons, meal);  
-      const itemsList = response.data;    
+      const itemsList = response.data;
+      console.log("itemsList.length = " + itemsList.length);
+      for (let i = 0; i < itemsList.length; i++) {
+        if (itemsList[i].station === 'Condiments' || itemsList[i].station === 'Beverages' || itemsList[i].station === 'Bright Meal' || itemsList[i].station === 'Deli') {
+          itemsList.splice(i, 1);
+          i--;
+        }
+      }    
       return itemsList;
     } catch (e) {
       console.error(`Error : getItems("${diningCommons}", "${meal}")`,e);
@@ -17,15 +24,15 @@ export function useItems(diningCommons, meal) {
   });
 }
 
-export function useItem(diningCommons, item) {
-  return useQuery(`getItem-${diningCommons}-${item}`, async () => {
+export function useItem(diningCommons, item, station) {
+  return useQuery(`getItem-${diningCommons}-${item}-${station}`, async () => {
     try {
-      const response = await getDiningHallItem(diningCommons, item);  
+      const response = await getDiningHallItem(diningCommons, item, station);  
       const items = response.data;
       console.log("items = " + items);    
       return items;
     } catch (e) {
-      console.error(`Error : getItems("${diningCommons}", "${item}")`,e);
+      console.error(`Error : getItems("${diningCommons}", "${item}", "${station}")`,e);
       return [];
     }
   }, {

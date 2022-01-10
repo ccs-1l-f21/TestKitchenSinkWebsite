@@ -1,6 +1,5 @@
 package edu.ucsb.cs156.kitchensink.controllers;
 
-
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import edu.ucsb.cs156.kitchensink.entities.MenuItem;
+import edu.ucsb.cs156.kitchensink.entities.Review;
 import edu.ucsb.cs156.kitchensink.models.CurrentUser;
 import edu.ucsb.cs156.kitchensink.repositories.MenuItemRepository;
 import edu.ucsb.cs156.kitchensink.repositories.ReviewRepository;
 import edu.ucsb.cs156.kitchensink.repositories.UserRepository;
 import edu.ucsb.cs156.kitchensink.services.UCSBDiningService;
+import edu.ucsb.cs156.kitchensink.services.ReviewService;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +47,9 @@ public class UCSBDiningController extends ApiController{
 
     @Autowired
     ReviewRepository reviewRepository;
+
+    @Autowired
+    ReviewService reviewService;
 
     @Autowired
     ObjectMapper mapper;
@@ -81,9 +86,10 @@ public class UCSBDiningController extends ApiController{
         String result = ucsbDiningService.getDiningCommonsMealItemsJSON(date, diningCommonsCode, mealCode);
         return ResponseEntity.ok().body(result);
     }
+
     @ApiOperation(value = "Receives the text from the frontend and stores in the database",
     notes = "")
-    @PostMapping("/writereview")
+    @PostMapping("/writtenreview")
     public ResponseEntity<String> getReview(
         @ApiParam("review text, e.g. this sucked") @RequestParam String rText,
         @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,
@@ -96,6 +102,7 @@ public class UCSBDiningController extends ApiController{
         log.info("rating = " + rating);
         log.info("diningCommonsCode = " + diningCommonsCode);
         log.info("item = " + item);
+        log.info("station = " + station);
         log.info("currentUser = " + currentUser);
         MenuItem menuItem = null;
         Optional<MenuItem> optionalMenuItem = menuItemRepository.findByNameAndDiningCommonsCode(item, diningCommonsCode);
@@ -116,7 +123,26 @@ public class UCSBDiningController extends ApiController{
         // assign stars and texts from the variables passed in by the user
         // store the review - review = reviewRepository.save(menuItem);
         // Change String body = mapper.writeValueAsString(review);
-        String body = mapper.writeValueAsString(menuItem);
+        Review review = null;
+        review = new Review();
+        review.setUser(currentUser.getUser());
+        review.setMenuItem(menuItem);
+        review.setStars(rating);
+        review.setReview(rText);
+        review = reviewRepository.save(review);
+        log.info("review = " + review);
+
+        String body = mapper.writeValueAsString(review);
         return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "Get list of items on the menu for a dining commons on a given date.", 
+    notes = "JSON return format documented here: https://developer.ucsb.edu/apis/dining/dining-menu#/")
+    @GetMapping("/getreviews")
+    public List<Review> getReviewsJSON(
+    ) throws JsonProcessingException {
+        // String result = reviewService.getReviews();
+        List<Review> reviews = reviewService.getReviews();
+        return reviews;
     }
 }
