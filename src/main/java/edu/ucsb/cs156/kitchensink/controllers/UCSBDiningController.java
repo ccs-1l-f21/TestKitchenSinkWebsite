@@ -20,6 +20,7 @@ import edu.ucsb.cs156.kitchensink.repositories.UserRepository;
 import edu.ucsb.cs156.kitchensink.services.UCSBDiningService;
 import edu.ucsb.cs156.kitchensink.services.ReviewService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,30 @@ public class UCSBDiningController extends ApiController{
 
     @Autowired
     ObjectMapper mapper;
+
+    @ApiOperation(value = "Get list of items on the menu for a dining commons from the database", 
+    notes = "")
+    @GetMapping("/getreviews")
+    public List<Review> getReviewsJSON(
+        @ApiParam("review text, e.g. this sucked") @RequestParam String menuitem,
+        @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam String diningCommonsCode
+    ) throws JsonProcessingException {
+        // String result = reviewService.getReviews();
+        List<Review> optionalReviews = reviewService.getReviews();
+        List<Review> sortedReviews = new ArrayList<Review>();
+        for(Review review : optionalReviews) {
+            if(review.getMenuItem().getName().equals(menuitem) && review.getMenuItem().getDiningCommonsCode().equals(diningCommonsCode)) {
+                sortedReviews.add(review);
+                // log.info(review.getName());
+            }
+        }
+        
+        // log.info("menuitem = " + menuitem);
+        // for (Review review : sortedReviews) {
+        //     log.info(review.getName());
+        // }
+        return sortedReviews;
+    }
 
     @ApiOperation(value = "Get list of dining commons serving meals on given date.", 
     notes = "JSON return format documented here: https://developer.ucsb.edu/apis/dining/dining-menu#/")
@@ -134,15 +159,5 @@ public class UCSBDiningController extends ApiController{
 
         String body = mapper.writeValueAsString(review);
         return ResponseEntity.ok().body(body);
-    }
-
-    @ApiOperation(value = "Get list of items on the menu for a dining commons on a given date.", 
-    notes = "JSON return format documented here: https://developer.ucsb.edu/apis/dining/dining-menu#/")
-    @GetMapping("/getreviews")
-    public List<Review> getReviewsJSON(
-    ) throws JsonProcessingException {
-        // String result = reviewService.getReviews();
-        List<Review> reviews = reviewService.getReviews();
-        return reviews;
     }
 }

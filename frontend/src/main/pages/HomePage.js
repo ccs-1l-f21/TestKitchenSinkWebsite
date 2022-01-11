@@ -9,6 +9,8 @@ import { useCommons } from "main/utils/commons";
 
 export default function HomePage(props) {
   const { data: diningCommonsListFromBackEnd } = useCommons();
+  console.log("typeof(diningCommonsListFromBackEnd) = " + typeof(diningCommonsListFromBackEnd))
+  console.log("diningCommonsListFromBackEnd[0] = " + diningCommonsListFromBackEnd[0])
   const diningCommonsList = (diningCommonsListFromBackEnd.length > 0) ? diningCommonsListFromBackEnd : props.diningCommonsList;
 
   return (

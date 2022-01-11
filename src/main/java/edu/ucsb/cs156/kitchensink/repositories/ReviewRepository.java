@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
-    
 }

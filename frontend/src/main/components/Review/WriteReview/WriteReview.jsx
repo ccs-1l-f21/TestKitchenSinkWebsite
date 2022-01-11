@@ -4,6 +4,7 @@ import StarRating from './StarRating'
 import './WriteReview.css'
 import { useParams } from 'react-router';
 import BasicLayout from 'main/layouts/BasicLayout/BasicLayout';
+import { useCurrentUser } from 'main/utils/currentUser';
 
 //import { submitReview }from 'main/utils/submitReview'
 
@@ -11,6 +12,7 @@ import BasicLayout from 'main/layouts/BasicLayout/BasicLayout';
 const WriteReview = () => {
     const [ userRating, setRating ] = useState(null);
     const [reviewText, setReviewText ] = useState(null);
+    const { data : currentUser } = useCurrentUser();
     const itemList = [useParams()['hall'], useParams()['food'], useParams()['station']];
     console.log("itemList[2] = " + itemList[2]);
 
@@ -26,15 +28,23 @@ const WriteReview = () => {
 
     return (
         <BasicLayout>
-            <StarRating setRating={setRating} userRating={userRating}/>
-            <form onSubmit={submitReview}>
-                <textarea
-                    value={reviewText}
-                    onChange={(event) => setReviewText(event.target.value)}
-                />
-                <br />
-                <button>Submit Review</button>
-            </form>
+            {
+              currentUser && currentUser.loggedIn ? (
+                <>
+                    <StarRating setRating={setRating} userRating={userRating}/>
+                    <form onSubmit={submitReview}>
+                        <textarea
+                            value={reviewText}
+                            onChange={(event) => setReviewText(event.target.value)}
+                        />
+                        <br />
+                        <button>Submit Review</button>
+                    </form>
+                </>
+              ) : (
+                <h1>Please Log In</h1>
+              )
+            }
         </BasicLayout>
     );
 }
