@@ -14,14 +14,8 @@ import java.util.Collection;
 @Table
 public class MenuItem {
   @Id
-  @SequenceGenerator(
-    name = "menuitem_sequence",
-    sequenceName = "menuitem_sequence",
-    allocationSize = 1  
-  )
   @GeneratedValue(
-    strategy = GenerationType.SEQUENCE, 
-    generator = "menuitem_sequence"
+    strategy = GenerationType.AUTO 
   )
   private long id;
   private String name;
