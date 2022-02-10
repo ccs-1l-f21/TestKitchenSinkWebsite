@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -110,6 +111,16 @@ public class UCSBDiningController extends ApiController{
         Review review = reviewService.updateReview(rText, rating, diningCommonsCode, item, station, currentUser.getUser().getEmail());
         String body = mapper.writeValueAsString(review);
         return ResponseEntity.ok().body(body);
+    }
+
+    @ApiOperation(value = "delete review", notes = "")
+    @DeleteMapping("/deletereview")
+    public ResponseEntity<String> deleteReview(
+        @ApiParam("id, e.g. 1") @RequestParam Long id
+    ) throws Exception {
+        System.out.println("Hello");
+        reviewService.deleteReview(id);
+        return ResponseEntity.ok().body("Delete Successful");
     }
 
     @ApiOperation(value = "Get list of dining commons serving meals on given date.", 

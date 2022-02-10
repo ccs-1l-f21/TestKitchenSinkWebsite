@@ -8,6 +8,7 @@ import { useParams } from 'react-router';
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
 import WriteReview from './WriteReview/WriteReview';
+import axios from 'axios';
 
 
 const ReviewBox = (props) => {
@@ -16,6 +17,22 @@ const ReviewBox = (props) => {
     var editPath = `/write-review/` + useParams()['hall'] +  "/" + useParams()['food'] + "/" + useParams()['station'] + `/edit`;
     const [showReviewBox, setShowReviewBox] = useState(false)
     const onClick = () => {if (showReviewBox === false ) {setShowReviewBox(true)} else{setShowReviewBox(false)}}
+    function deleteReview() {
+        if (window.confirm("Are you sure you want to delete this review?") === true) {
+            axios.delete(`/api/dining/deletereview?id=${props.id}`).then(response => {
+                if (response.data != null) {
+                    alert("Review has been successfully deleted")
+                    window.location.reload(false);
+                }
+                else {
+                    alert("Review has failed to delete")
+                }
+            }
+            )} 
+        else {
+            alert("You have canceled deleting this review")
+        }
+    }
     console.log(editPath)
     return (
         <div class="text-justify darker mt-4 float-right"> <img id="pfp" src={props.pictureURL} alt="" class="rounded-circle" width="40" height="40" />
@@ -24,6 +41,7 @@ const ReviewBox = (props) => {
                 currentUser && currentUser.loggedIn ? (
                     <>
                         <Button onClick={onClick}> Edit </Button> 
+                        <Button onClick={deleteReview}> Delete </Button> 
                         <br />
                         { 
                             showReviewBox ? <WriteReview rText={props.rText} stars={props.rating} edit={true}/> 

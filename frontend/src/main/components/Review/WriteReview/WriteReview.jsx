@@ -42,6 +42,7 @@ const WriteReview = (props) => {
             axios.put(`/writtenreview/edit?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`).then(response => {
                 if (response.data != null) {
                     alert("Review Updated Successfully");
+                    window.location.reload(false);
                 }
             }).catch(console.log("An error has occured"));
             
@@ -52,6 +53,7 @@ const WriteReview = (props) => {
                 
                 if (response.data != null) {
                     alert("Review Post Successfully");
+                    window.location.reload(false);
                 }
             }).catch();
         }

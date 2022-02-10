@@ -51,7 +51,7 @@ const ItemPage = () => {
               )
             } 
             <br />
-            {reviewList && reviewList.map((r)=>(<ReviewBox rating={r.stars} rText={r.review} userName={r.user.fullName} pictureURL={r.user.pictureUrl}/>)) }
+            {reviewList && reviewList.map((r)=>(<ReviewBox id={r.id} rating={r.stars} rText={r.review} userName={r.user.fullName} pictureURL={r.user.pictureUrl}/>)) }
         </BasicLayout>
     );
 }

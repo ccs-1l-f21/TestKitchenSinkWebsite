@@ -65,4 +65,12 @@ public class ReviewService {
         return foundReview;
 
     }
+
+    public void deleteReview(Long reviewId) {
+        boolean exists = reviewRepository.existsById(reviewId);
+        if(!exists) {
+            throw new IllegalStateException("review with id " + reviewId + "does not exist");
+        }
+        reviewRepository.deleteById(reviewId);
+    }
 }
