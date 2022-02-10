@@ -18,6 +18,8 @@ function App() {
   const { data : currentUser } = useCurrentUser();
   const { data : commonsList } = useCommons();
 
+  console.log(typeof(currentUser.root))
+
   return (
       <BrowserRouter>
         <Routes>
@@ -30,6 +32,7 @@ function App() {
           <Route path='/itemPageTest' element={<ItemPage />} />
           <Route path='/dining/:hall/:food/:station' element={<ItemPage/>}/>
           <Route path='/write-review/:hall/:food/:station' element={<WriteReview />} />
+          <Route path='/write-review/:hall/:food/:station/:edit' element={<WriteReview />} />
         </Routes>
       </BrowserRouter>
   );

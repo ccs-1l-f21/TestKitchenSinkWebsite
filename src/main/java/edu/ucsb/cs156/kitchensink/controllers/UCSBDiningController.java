@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class UCSBDiningController extends ApiController{
         @ApiParam("review text, e.g. this sucked") @RequestParam String menuitem,
         @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam String diningCommonsCode
     ) throws JsonProcessingException {
+        log.info("Inside the GetMapping");
         // String result = reviewService.getReviews();
         List<Review> optionalReviews = reviewService.getReviews();
         List<Review> sortedReviews = new ArrayList<Review>();
@@ -71,12 +73,43 @@ public class UCSBDiningController extends ApiController{
                 // log.info(review.getName());
             }
         }
-        
-        // log.info("menuitem = " + menuitem);
-        // for (Review review : sortedReviews) {
-        //     log.info(review.getName());
-        // }
         return sortedReviews;
+    }
+
+    @ApiOperation(value = "Get Review by item and user", notes = "")
+    @GetMapping("/getuserreview")
+    public List<Review> getUserReviewJSON(
+        @ApiParam("menu item, e.g. Oatmeal_(vgn)") @RequestParam String menuitem,
+        @ApiParam("dining common, e.g. carrillo") @RequestParam String diningCommonsCode
+    ) throws JsonProcessingException {
+        List<Review> reviews = reviewService.getReviews();
+        List<Review> foundReview = new ArrayList<Review>();
+        CurrentUser currentUser = super.getCurrentUser();
+        for(Review review : reviews) {
+            System.out.println(review.getMenuItem().getName().equals(menuitem));
+            if(review.getMenuItem().getName().equals(menuitem) && review.getMenuItem().getDiningCommonsCode().equals(diningCommonsCode) && review.getUser().getEmail().equals(currentUser.getUser().getEmail())) {
+                foundReview.add(review);
+                break;
+            }
+        }
+
+        return foundReview;
+    }
+
+    @ApiOperation(value = "update review text and rating", notes = "")
+    @PutMapping("/editreview")
+    public ResponseEntity<String> putReview(
+        @ApiParam("review text, e.g. this sucked") @RequestParam String rText,
+        @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,
+        @ApiParam("hall, e.g. de-la-guerra") @RequestParam String diningCommonsCode,
+        @ApiParam("item, e.g. Dan Dan Noodles (nuts)") @RequestParam String item,
+        @ApiParam("station, e.g. Condiments") @RequestParam String station    
+    ) throws Exception {
+        System.out.println("Inside the PutMapping");
+        CurrentUser currentUser = super.getCurrentUser();
+        Review review = reviewService.updateReview(rText, rating, diningCommonsCode, item, station, currentUser.getUser().getEmail());
+        String body = mapper.writeValueAsString(review);
+        return ResponseEntity.ok().body(body);
     }
 
     @ApiOperation(value = "Get list of dining commons serving meals on given date.", 

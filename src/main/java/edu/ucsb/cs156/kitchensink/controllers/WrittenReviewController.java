@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import edu.ucsb.cs156.kitchensink.models.CurrentUser;
 import edu.ucsb.cs156.kitchensink.repositories.MenuItemRepository;
 import edu.ucsb.cs156.kitchensink.repositories.ReviewRepository;
 import edu.ucsb.cs156.kitchensink.repositories.UserRepository;
+import edu.ucsb.cs156.kitchensink.services.ReviewService;
 import edu.ucsb.cs156.kitchensink.services.UCSBDiningService;
 
 import java.util.Optional;
@@ -46,11 +48,30 @@ public class WrittenReviewController extends ApiController {
     ReviewRepository reviewRepository;
 
     @Autowired
+    ReviewService reviewService;
+
+    @Autowired
     ObjectMapper mapper;
 
+    @ApiOperation(value = "update review text and rating", notes = "")
+    @PutMapping("/edit")
+    public ResponseEntity<String> putReview(
+        @ApiParam("review text, e.g. this sucked") @RequestParam String rText,
+        @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,
+        @ApiParam("hall, e.g. de-la-guerra") @RequestParam String diningCommonsCode,
+        @ApiParam("item, e.g. Dan Dan Noodles (nuts)") @RequestParam String item,
+        @ApiParam("station, e.g. Condiments") @RequestParam String station    
+    ) throws Exception {
+        System.out.println("Inside the PutMapping");
+        CurrentUser currentUser = super.getCurrentUser();
+        Review review = reviewService.updateReview(rText, rating, diningCommonsCode, item, station, currentUser.getUser().getEmail());
+        String body = mapper.writeValueAsString(review);
+        return ResponseEntity.ok().body(body);
+    }
+    
     @ApiOperation(value = "Receives the text from the frontend and stores in the database",
     notes = "")
-    @PostMapping("")
+    @PostMapping("/post/writtenreview")
     public ResponseEntity<String> getReview(
         @ApiParam("review text, e.g. this sucked") @RequestParam String rText,
         @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,

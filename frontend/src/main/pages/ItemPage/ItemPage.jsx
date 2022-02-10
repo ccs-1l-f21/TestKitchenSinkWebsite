@@ -1,31 +1,25 @@
 import React from 'react';
-// import StarRating from "main/components/WriteReview/StarRating";
+import { useState } from 'react';
 import { useParams } from 'react-router';
 import { Button } from 'react-bootstrap';
-// import { useItem } from "main/utils/items";
 import ReviewBox from 'main/components/Review/ReviewBox';
 import './ItemPage.css';
 import BasicLayout from 'main/layouts/BasicLayout/BasicLayout';
-// import { Link } from 'react-router-dom';
 import { useReviews } from 'main/utils/reviews';
 import { useCurrentUser } from 'main/utils/currentUser';
-// import { useCommons } from 'main/utils/commons';
+import WriteReview from 'main/components/Review/WriteReview/WriteReview.jsx';
 
 const ItemPage = () => {
-    // console.log("useParams()['food'] = " + useParams()['food'] + useParams()['station']);
-    // const { data: commons } = useCommons();
-    // let isCommon = false;
-    // let urlCommon = useParams()['hall'];
-    // const { data: itemList } = useItem(useParams()['hall'], useParams()['food'], useParams()['station']);
     var itemName = useParams()['food'].replace(/_/g, " ");
     itemName = itemName.replaceAll('-', '/');
-    // console.log(itemList);
     const { data: reviewList } = useReviews(useParams()['food'], useParams()['hall']);
     const { data : currentUser } = useCurrentUser();
     var rating = 0;
     var count = 0;
     var sum = 0;
-    var writeAReview = "/write-review/" + useParams()['hall'] +  "/" + useParams()['food'] + "/" + useParams()['station']
+    // var writeAReview = "/write-review/" + useParams()['hall'] +  "/" + useParams()['food'] + "/" + useParams()['station']
+    const [showReviewBox, setShowReviewBox] = useState(false)
+    const onClick = () => {if (showReviewBox === false ) {setShowReviewBox(true)} else{setShowReviewBox(false)}}
 
     for (const review of reviewList) {
         sum += review.stars;
@@ -49,7 +43,8 @@ const ItemPage = () => {
             {
               currentUser && currentUser.loggedIn ? (
                 <>
-                    <Button href={writeAReview}> Write A Review </Button>
+                    <Button onClick={onClick}> Write A Review </Button>
+                    { showReviewBox ? <WriteReview edit={false}/> : null }
                 </>
               ) : (
                 <Button href="/oauth2/authorization/google"> Write A Review </Button>
