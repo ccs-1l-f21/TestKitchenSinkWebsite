@@ -12,7 +12,7 @@ import WriteReview from 'main/components/Review/WriteReview/WriteReview.jsx';
 const ItemPage = () => {
     var itemName = useParams()['food'].replace(/_/g, " ");
     itemName = itemName.replaceAll('-', '/');
-    const { data: reviewList } = useReviews(useParams()['food'], useParams()['hall']);
+    const { data: reviewList } = useReviews(useParams()['food'], useParams()['hall'], useParams()['station']);
     const { data : currentUser } = useCurrentUser();
     var rating = 0;
     var count = 0;

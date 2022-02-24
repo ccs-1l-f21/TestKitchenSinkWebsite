@@ -4,6 +4,8 @@ import StarRating from './StarRating'
 import './WriteReview.css'
 import { useParams } from 'react-router';
 import { useCurrentUser } from 'main/utils/currentUser';
+import UploadImage from './UploadImage.jsx'
+import FormData from 'form-data'
 // import BasicLayout from 'main/layouts/BasicLayout/BasicLayout';
 // import { useUserReview } from 'main/utils/reviews';
 //import { submitReview }from 'main/utils/submitReview'
@@ -22,24 +24,22 @@ const WriteReview = (props) => {
     const itemList = [useParams()['hall'], useParams()['food'], useParams()['station']];
     const editVar = props.edit;
     var buttonText = 'Submit Review'
+    var [imageList, setImageList] = useState([]);
+    var bodyFormData = new FormData();
+            
+
     
     if (editVar === true) {
         buttonText = 'Update Review'  
     }
-    console.log(props.rText)
-    // setReviewText(props.rText)
-
-    // if (props.stars) {
-    //     setRating(props.stars)
-    // }
 
     const submitReview = (e) =>{
         e.preventDefault();  
-        if(reviewText === null || userRating === null){alert("enter yo values"); return;}
+
+        if(reviewText === undefined || userRating === undefined){alert("enter yo values"); return;}
+        
         if(editVar === true) {
-            console.log("In edit conditional")
-            console.log('reviewText = ' + reviewText);
-            axios.put(`/writtenreview/edit?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`).then(response => {
+            axios.put(`/api/review/editreview?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`).then(response => {
                 if (response.data != null) {
                     alert("Review Updated Successfully");
                     window.location.reload(false);
@@ -49,9 +49,32 @@ const WriteReview = (props) => {
             return;
         }
         else{
-            axios.post(`/api/dining/writtenreview?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`).then(response => {
-                
-                if (response.data != null) {
+            imageList.map((image) => {bodyFormData.append('user_pic[]', image.data_url);})
+            for (var value of bodyFormData.values()) {
+                console.log(JSON.stringify(value));
+            }
+            // console.log('boundary = ' + bodyFormData.getBoundary)
+            if (reviewText === null || userRating === undefined) {
+                alert("Please leave a written review with a rating")
+                return
+            }
+            axios.post(`/api/review/writtenreview`, {}, { 
+                headers : {
+                    rText : reviewText,
+                    rating : userRating,
+                    diningCommonsCode : itemList[0],
+                    item : itemList[1],
+                    station : itemList[2],
+                    'Content-Type': false,
+                    fileAttachment : bodyFormData
+                },
+            })
+            .then(response => {
+                if (response.data !== null) {
+                    if(response.data === "You have already reviewed this item") {
+                        alert("You have already reviewed this item")
+                        return;
+                    }
                     alert("Review Post Successfully");
                     window.location.reload(false);
                 }
@@ -73,6 +96,8 @@ const WriteReview = (props) => {
                         <br />
                         <button>{buttonText}</button>
                     </form>
+                    <UploadImage setImageList={setImageList}/>
+                    {console.log('imageList = ' + imageList)}
                 </>
               ) : (
                 <h1>Please Log In</h1>

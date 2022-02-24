@@ -1,6 +1,8 @@
 package edu.ucsb.cs156.kitchensink.services;
 
+import edu.ucsb.cs156.kitchensink.entities.MenuItem;
 import edu.ucsb.cs156.kitchensink.entities.Review;
+import edu.ucsb.cs156.kitchensink.entities.User;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 @Slf4j
@@ -37,24 +40,16 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<Review> getReviews() {
-        return (List<Review>) reviewRepository.findAll();
-    }
+    // public List<Review> getReviews() {
+    //     return (List<Review>) reviewRepository.findAll();
+    // }
     
     @Transactional
-    public Review updateReview(String rText, int rating, String diningCommonsCode, String item, String station, String userEmail) throws Exception {
-        List<Review> listReview = (List<Review>)reviewRepository.findAll();
-        Review foundReview = null;
+    public Review updateReview(String rText, int rating, MenuItem menuItem, User user) throws Exception {
+        // List<Review> listReview = (List<Review>)reviewRepository.findAll();
+        Optional<Review> optionalFoundReview = reviewRepository.findByMenuItemAndUser(menuItem, user);
+        Review foundReview = optionalFoundReview.get();
 
-        for(Review review : listReview) {
-            System.out.println(review.getMenuItem().getName().equals(item));
-            if(review.getMenuItem().getName().equals(item) && review.getMenuItem().getDiningCommonsCode().equals(diningCommonsCode) && review.getUser().getEmail().equals(userEmail)) {
-                foundReview = review;
-                System.out.println(foundReview.getReview());
-                break;
-                // log.info(review.getName());
-            }
-        }
         if (foundReview == null){
             throw new Exception("Review Not Found");
         }

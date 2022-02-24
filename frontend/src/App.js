@@ -18,8 +18,6 @@ function App() {
   const { data : currentUser } = useCurrentUser();
   const { data : commonsList } = useCommons();
 
-  console.log(typeof(currentUser.root))
-
   return (
       <BrowserRouter>
         <Routes>

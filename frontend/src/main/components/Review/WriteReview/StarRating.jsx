@@ -5,7 +5,6 @@ import './StarRating.css';
 
 const StarRating = (props) => {
     const [ onHover, setHover ] = useState(null);
-    console.log('userRating = ' + props.userRating);
     return (
         <div>
             {[...Array(5)].map((_star, i) => {
