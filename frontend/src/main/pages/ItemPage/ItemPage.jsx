@@ -14,7 +14,7 @@ const ItemPage = () => {
     itemName = itemName.replaceAll('-', '/');
     const { data: reviewList } = useReviews(useParams()['food'], useParams()['hall'], useParams()['station']);
     const { data : currentUser } = useCurrentUser();
-    var rating = 0;
+    var rating = '-';
     var count = 0;
     var sum = 0;
     // var writeAReview = "/write-review/" + useParams()['hall'] +  "/" + useParams()['food'] + "/" + useParams()['station']
@@ -51,7 +51,7 @@ const ItemPage = () => {
               )
             } 
             <br />
-            {reviewList && reviewList.map((r)=>(<ReviewBox id={r.id} rating={r.stars} rText={r.review} userName={r.user.fullName} pictureURL={r.user.pictureUrl}/>)) }
+            {reviewList && reviewList.map((r)=>(<ReviewBox id={r.id} rating={r.stars} rText={r.review} userName={r.user.fullName} pictureURL={r.user.pictureUrl} pictures={r.pictureString}/>)) }
         </BasicLayout>
     );
 }

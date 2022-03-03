@@ -49,7 +49,9 @@ const WriteReview = (props) => {
             return;
         }
         else{
-            imageList.map((image) => {bodyFormData.append('user_pic[]', image.data_url);})
+            let s = "";
+            imageList.map((image) => { s+=image.data_url+'|' });//bodyFormData.append('user_pic[]', image.data_url);})
+            bodyFormData.append('user_pic[]', s.substring(0, s.length-2));
             for (var value of bodyFormData.values()) {
                 console.log(JSON.stringify(value));
             }
@@ -58,16 +60,15 @@ const WriteReview = (props) => {
                 alert("Please leave a written review with a rating")
                 return
             }
-            axios.post(`/api/review/writtenreview`, {}, { 
-                headers : {
+            console.log(JSON.stringify(bodyFormData.get('user_pic[]')));
+            axios.post(`/api/review/writtenreview`, {body : JSON.stringify(bodyFormData.get('user_pic[]'))} , { 
+                params : {
                     rText : reviewText,
                     rating : userRating,
                     diningCommonsCode : itemList[0],
                     item : itemList[1],
                     station : itemList[2],
-                    'Content-Type': false,
-                    fileAttachment : bodyFormData
-                },
+                }
             })
             .then(response => {
                 if (response.data !== null) {

@@ -43,8 +43,8 @@ function UploadImage(props) {
                         <button onClick={onImageRemoveAll}>Remove all images</button>
                         {imageList.map((image, index) => (
                             <div key={index}>
-                                {/* {console.log(typeof(image.data_url))}
-                                {console.log(image.data_url)} */}
+                                {console.log(typeof(image.data_url))}
+                                {console.log(image.data_url)}
                                 <img src={image.data_url} alt="" width="100" />
                                 <div>
                                     <button onClick={() => onImageUpdate(index)}>Update</button>

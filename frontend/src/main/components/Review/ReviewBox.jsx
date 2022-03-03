@@ -12,7 +12,11 @@ import axios from 'axios';
 
 
 const ReviewBox = (props) => {
-    
+
+    props.pictures.map((p) =>(console.log("p = " + p.base64)))
+
+    // const picURL = props.pictures[0].base64 + props.pictures[1].base64
+    // console.log('props.pictures = ' + picURL)
     const { data: currentUser } = useCurrentUser();
     // var editPath = `/write-review/` + useParams()['hall'] +  "/" + useParams()['food'] + "/" + useParams()['station'] + `/edit`;
     const [showReviewBox, setShowReviewBox] = useState(false)
@@ -48,9 +52,8 @@ const ReviewBox = (props) => {
                             <>
                                 <h4>{props.userName}</h4>
                                 <p><UserStarRating numStars={props.rating} />{props.rText}</p>
-                                <img src="https://i.imgur.com/8CIltOL.jpg" />
-                                <img src="https://i.imgur.com/8CIltOL.jpg" />
-                                <img src="https://i.imgur.com/8CIltOL.jpg" />  
+                                {props.pictures.map((p) =>(<img src={p.base64} />))} 
+                                
                             </>
                         }
                     </>

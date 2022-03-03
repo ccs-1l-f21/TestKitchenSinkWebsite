@@ -7,7 +7,10 @@ import edu.ucsb.cs156.kitchensink.entities.User;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
+import org.hibernate.Session;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.web.client.RestTemplate;
@@ -35,13 +38,24 @@ import java.util.Optional;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
 
+    @PersistenceContext
+	private EntityManager entityManager;
+
     @Autowired
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
-    // public List<Review> getReviews() {
-    //     return (List<Review>) reviewRepository.findAll();
+    // @Transactional
+    // public List<Optional<Review>> getReviews(MenuItem menuItem) {
+    //     List<Optional<Review>> reviews = reviewRepository.findByMenuItem(menuItem);
+    //     // if (reviews.isEmpty()) {
+    //     //     return reviews;
+    //     // }
+    //     // Session sessin = (Session)entityManager.unwrap(Session.class);
+	// 	// sessin.close();
+
+    //     return reviews;
     // }
     
     @Transactional
