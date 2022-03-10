@@ -13,7 +13,7 @@ import axios from 'axios';
 
 const ReviewBox = (props) => {
 
-    props.pictures.map((p) =>(console.log("p = " + p.base64)))
+    // props.pictures.map((p) =>(console.log("p = " + p.base64)))
 
     // const picURL = props.pictures[0].base64 + props.pictures[1].base64
     // console.log('props.pictures = ' + picURL)
@@ -47,7 +47,7 @@ const ReviewBox = (props) => {
                         <Button onClick={deleteReview}> Delete </Button> 
                         <br />
                         { 
-                            showReviewBox ? <WriteReview rText={props.rText} stars={props.rating} edit={true}/> 
+                            showReviewBox ? <WriteReview rText={props.rText} stars={props.rating} edit={true} pictures={props.pictures}/> 
                         : 
                             <>
                                 <h4>{props.userName}</h4>
@@ -61,9 +61,7 @@ const ReviewBox = (props) => {
                     <>
                         <h4>{props.userName}</h4>
                         <p><UserStarRating numStars={props.rating} />{props.rText}</p>
-                        <img src="https://i.imgur.com/8CIltOL.jpg" />
-                        <img src="https://i.imgur.com/8CIltOL.jpg" />
-                        <img src="https://i.imgur.com/8CIltOL.jpg" />  
+                        {props.pictures.map((p) =>(<img src={p.base64} />))}   
                     </>
                 )
             }

@@ -28,7 +28,7 @@ const WriteReview = (props) => {
     var bodyFormData = new FormData();
             
 
-    
+    // console.log('props.base64 = ' + props.pictures)
     if (editVar === true) {
         buttonText = 'Update Review'  
     }
@@ -37,9 +37,16 @@ const WriteReview = (props) => {
         e.preventDefault();  
 
         if(reviewText === undefined || userRating === undefined){alert("enter yo values"); return;}
-        
+        let s = "";
+        imageList.map((image) => { s+=image.data_url+'|' });//bodyFormData.append('user_pic[]', image.data_url);})
+        bodyFormData.append('user_pic[]', s.substring(0, s.length-2));
+        for (var value of bodyFormData.values()) {
+            console.log(JSON.stringify(value));
+        }
         if(editVar === true) {
-            axios.put(`/api/review/editreview?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`).then(response => {
+            axios.put(`/api/review/editreview?rText=${reviewText}&rating=${userRating}&diningCommonsCode=${itemList[0]}&item=${itemList[1]}&station=${itemList[2]}`, 
+                {body : JSON.stringify(bodyFormData.get('user_pic[]'))})
+            .then(response => {
                 if (response.data != null) {
                     alert("Review Updated Successfully");
                     window.location.reload(false);
@@ -49,12 +56,7 @@ const WriteReview = (props) => {
             return;
         }
         else{
-            let s = "";
-            imageList.map((image) => { s+=image.data_url+'|' });//bodyFormData.append('user_pic[]', image.data_url);})
-            bodyFormData.append('user_pic[]', s.substring(0, s.length-2));
-            for (var value of bodyFormData.values()) {
-                console.log(JSON.stringify(value));
-            }
+            
             // console.log('boundary = ' + bodyFormData.getBoundary)
             if (reviewText === null || userRating === undefined) {
                 alert("Please leave a written review with a rating")
@@ -97,8 +99,8 @@ const WriteReview = (props) => {
                         <br />
                         <button>{buttonText}</button>
                     </form>
-                    <UploadImage setImageList={setImageList}/>
-                    {console.log('imageList = ' + imageList)}
+                    <UploadImage setImageList={setImageList} imageList={imageList}/>
+                    {/* {console.log('imageList = ' + imageList)} */}
                 </>
               ) : (
                 <h1>Please Log In</h1>

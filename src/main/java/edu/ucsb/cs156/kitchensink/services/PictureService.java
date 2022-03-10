@@ -37,7 +37,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class ReviewService {
+public class PictureService {
     private final ReviewRepository reviewRepository;
     private final PictureRepository pictureRepository;
 
@@ -45,42 +45,13 @@ public class ReviewService {
 	private EntityManager entityManager;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, PictureRepository pictureRepository) {
+    public PictureService(ReviewRepository reviewRepository, PictureRepository pictureRepository) {
         this.reviewRepository = reviewRepository;
         this.pictureRepository = pictureRepository;
     }
 
 
-    // @Transactional
-    // public List<Optional<Review>> getReviews(MenuItem menuItem) {
-    //     List<Optional<Review>> reviews = reviewRepository.findByMenuItem(menuItem);
-    //     // if (reviews.isEmpty()) {
-    //     //     return reviews;
-    //     // }
-    //     // Session sessin = (Session)entityManager.unwrap(Session.class);
-	// 	// sessin.close();
-
-    //     return reviews;
-    // }
-    
-    @Transactional
-    public Review updateReview(String rText, int rating, MenuItem menuItem, User user) throws Exception {
-        // List<Review> listReview = (List<Review>)reviewRepository.findAll();
-        Optional<Review> optionalFoundReview = reviewRepository.findByMenuItemAndUser(menuItem, user);
-        Review foundReview = optionalFoundReview.get();
-
-        if (foundReview == null){
-            throw new Exception("Review Not Found");
-        }
-
-        foundReview.setReview(rText);
-        foundReview.setStars(rating);
-
-        return foundReview;
-
-    }
-
-    public void deleteReview(Long reviewId) {
+    public void deletePictureByReviewId(Long reviewId) {
         boolean exists = reviewRepository.existsById(reviewId);
         if(!exists) {
             throw new IllegalStateException("review with id " + reviewId + "does not exist");
@@ -91,6 +62,5 @@ public class ReviewService {
             Picture picture = pictureList.get(i).get();
             pictureRepository.deleteById(picture.getId());
         }
-        reviewRepository.deleteById(reviewId);
     }
 }

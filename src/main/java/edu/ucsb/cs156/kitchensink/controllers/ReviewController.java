@@ -26,6 +26,7 @@ import edu.ucsb.cs156.kitchensink.repositories.PictureRepository;
 
 import edu.ucsb.cs156.kitchensink.repositories.ReviewRepository;
 import edu.ucsb.cs156.kitchensink.repositories.UserRepository;
+import edu.ucsb.cs156.kitchensink.services.PictureService;
 import edu.ucsb.cs156.kitchensink.services.ReviewService;
 import edu.ucsb.cs156.kitchensink.services.UCSBDiningService;
 
@@ -71,6 +72,9 @@ public class ReviewController extends ApiController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    PictureService pictureService;
 
     @Autowired
     ObjectMapper mapper;
@@ -191,12 +195,32 @@ public class ReviewController extends ApiController {
         @ApiParam("rating, e.g. 1,2,3,4,5") @RequestParam int rating,
         @ApiParam("hall, e.g. de-la-guerra") @RequestParam String diningCommonsCode,
         @ApiParam("item, e.g. Dan Dan Noodles (nuts)") @RequestParam String item,
-        @ApiParam("station, e.g. Condiments") @RequestParam String station    
+        @ApiParam("station, e.g. Condiments") @RequestParam String station,
+        HttpEntity<String> httpEntity    
     ) throws Exception {
+        String images = httpEntity.getBody();
+        images = images.substring(11, images.length()-3);
+        // log.info(images);
+        String[] array = images.split("\\|");
+        for (int i = 0; i < array.length; i++) {
+            // array[i] = array[i].substring(23);
+            if(array[i].substring(array[i].length()-1, array[i].length()).equals("\\")) {
+                array[i] = array[i].substring(0, array[i].length()-1) + "=";
+            }
+        }
         CurrentUser currentUser = super.getCurrentUser();
         Optional<MenuItem> optionalMenuItem = menuItemRepository.findByNameAndDiningCommonsCode(item, diningCommonsCode);
         MenuItem menuItem = optionalMenuItem.get();
         Review review = reviewService.updateReview(rText, rating, menuItem, currentUser.getUser());
+        pictureService.deletePictureByReviewId(review.getId());
+        for (int i = 0; i < array.length; i++) {
+            Picture picture = new Picture();
+            byte[] imageInBytes = Base64.getEncoder().encode(array[i].getBytes());
+            // log.info(imageInBytes.toString());
+            picture.setBase64(imageInBytes);
+            picture.setReviewId(review.getId());
+            pictureRepository.save(picture);
+        }
         String body = mapper.writeValueAsString(review);
         return ResponseEntity.ok().body(body);
     }
