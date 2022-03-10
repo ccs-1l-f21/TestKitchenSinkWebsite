@@ -1,17 +1,30 @@
 package edu.ucsb.cs156.kitchensink.controllers;
 
-
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import edu.ucsb.cs156.kitchensink.entities.MenuItem;
+import edu.ucsb.cs156.kitchensink.entities.Review;
+import edu.ucsb.cs156.kitchensink.models.CurrentUser;
+import edu.ucsb.cs156.kitchensink.repositories.MenuItemRepository;
+import edu.ucsb.cs156.kitchensink.repositories.ReviewRepository;
+import edu.ucsb.cs156.kitchensink.repositories.UserRepository;
 import edu.ucsb.cs156.kitchensink.services.UCSBDiningService;
+import edu.ucsb.cs156.kitchensink.services.ReviewService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,10 +37,26 @@ import io.swagger.annotations.ApiParam;
 @Slf4j
 @RestController
 @RequestMapping("/api/dining")
-public class UCSBDiningController {
+public class UCSBDiningController extends ApiController{
     
     @Autowired
     UCSBDiningService ucsbDiningService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MenuItemRepository menuItemRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
+
+    @Autowired
+    ReviewService reviewService;
+
+    @Autowired
+    ObjectMapper mapper;
+
 
     @ApiOperation(value = "Get list of dining commons serving meals on given date.", 
     notes = "JSON return format documented here: https://developer.ucsb.edu/apis/dining/dining-menu#/")
@@ -61,6 +90,4 @@ public class UCSBDiningController {
         String result = ucsbDiningService.getDiningCommonsMealItemsJSON(date, diningCommonsCode, mealCode);
         return ResponseEntity.ok().body(result);
     }
-
-
 }

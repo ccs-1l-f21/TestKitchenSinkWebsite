@@ -52,7 +52,7 @@ public class UCSBDiningService {
 
         HttpHeaders headers = getHeaders();
 
-        log.info("date={}", date);
+        // log.info("date={}", date);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
       
@@ -69,8 +69,8 @@ public class UCSBDiningService {
 
         HttpHeaders headers = getHeaders();
 
-        log.info("date={}", date);
-        log.info("diningCommonsCode={}", diningCommonsCode);
+        // log.info("date={}", date);
+        // log.info("diningCommonsCode={}", diningCommonsCode);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
       
@@ -87,9 +87,9 @@ public class UCSBDiningService {
 
         HttpHeaders headers = getHeaders();
 
-        log.info("date={}", date);
-        log.info("diningCommonsCode={}", diningCommonsCode);
-        log.info("mealCode={}", mealCode);
+        // log.info("date={}", date);
+        // log.info("diningCommonsCode={}", diningCommonsCode);
+        // log.info("mealCode={}", mealCode);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
       

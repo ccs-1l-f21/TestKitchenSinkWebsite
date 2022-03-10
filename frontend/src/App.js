@@ -3,30 +3,34 @@ import HomePage from "main/pages/HomePage";
 import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
-import OrtegaEntrees from "main/components/Nav/OrtegaPage";
-import DLGEntrees from "main/components/Nav/DLGPage";
-import CarrilloEntrees from "main/components/Nav/CarrilloPage";
-import PortolaEntrees from "main/components/Nav/PortolaPage";
-
+import DiningCommonPage from "main/pages/DiningCommonPage";
 import "bootstrap/dist/css/bootstrap.css";
+import { useCommons } from "main/utils/commons";
+import ItemPage from "main/pages/ItemPage/ItemPage";
+import WriteReview from "main/components/Review/WriteReview/WriteReview";
 
+// import { useMeals } from "main/utils/meals";
+// import { useItems } from "main/utils/items";
+// import ItemPage from "main/pages/ItemPage";
 
 function App() {
 
-  const { data: currentUser } = useCurrentUser();
+  const { data : currentUser } = useCurrentUser();
+  const { data : commonsList } = useCommons();
 
   return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage diningCommons = {[]}/>} />
           <Route path="/profile" element={<ProfilePage />} />
           {
             hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/users" element={<AdminUsersPage />} />
           }
-          <Route path="/ortega" element={<OrtegaEntrees />} />
-          <Route path="/de-la-guerra" element={<DLGEntrees />} />
-          <Route path="/carrillo" element={<CarrilloEntrees />} />
-          <Route path="/portola" element={<PortolaEntrees />} />
+          {commonsList.map((c) => (<Route path={`commons/${c.code}`} element={<DiningCommonPage diningCommonName={c.name} diningCommonCode = {c.code}/>}/>))}
+          <Route path='/itemPageTest' element={<ItemPage />} />
+          <Route path='/dining/:hall/:food/:station' element={<ItemPage/>}/>
+          <Route path='/write-review/:hall/:food/:station' element={<WriteReview />} />
+          <Route path='/write-review/:hall/:food/:station/:edit' element={<WriteReview />} />
         </Routes>
       </BrowserRouter>
   );

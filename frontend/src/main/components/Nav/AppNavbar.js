@@ -1,13 +1,13 @@
 import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { hasRole} from "main/utils/currentUser";
+import { hasRole } from "main/utils/currentUser";
 
 export default function AppNavbar({currentUser, doLogout}) { 
   return (
     <Navbar expand="xl" variant="dark" bg="dark" sticky="top">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          RacoonFood
+          RaccoonFood
         </Navbar.Brand>
 
         <Navbar.Toggle />
